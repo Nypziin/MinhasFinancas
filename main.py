@@ -17,9 +17,5 @@ async def ping():
 def read_index():
     return FileResponse("frontend/index.html")
 
-@app.get("/minha-api")
-def minha_api():
-    return {"mensagem": "Olá do backend FastAPI!"}
-
 app.include_router(gastos.router)
 app.include_router(enum.router)

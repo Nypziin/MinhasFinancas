@@ -6,15 +6,15 @@ import enum
 
 
 class FormaPagamentoEnum(str, enum.Enum):
-    credito = "crédito"
-    debito = "débito"
-    pix = "pix"
-    dinheiro = "dinheiro"
+    credito = "Crédito"
+    debito = "Débito"
+    pix = "Pix"
+    dinheiro = "Dinheiro"
 
 
 class TipoGastoEnum(str, enum.Enum):
-    fixo = "fixo"
-    variavel = "variável"
+    fixo = "Fixo"
+    variavel = "Variável"
 
 
 class Gasto(Base):
