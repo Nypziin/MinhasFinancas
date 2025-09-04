@@ -1,17 +1,17 @@
 from pydantic import BaseModel, Field
 from datetime import date, datetime
 from enum import Enum
-from typing import Optional
+
 
 class FormaPagamentoEnum(str, Enum):
-    credito = "crédito"
-    debito = "débito"
-    pix = "pix"
-    dinheiro = "dinheiro"
+    credito = "Crédito"
+    debito = "Débito"
+    pix = "Pix"
+    dinheiro = "Dinheiro"
 
 class TipoGastoEnum(str, Enum):
-    fixo = "fixo"
-    variavel = "variável"
+    fixo = "Fixo"
+    variavel = "Variável"
 
 class GastoBase(BaseModel):
     nome: str

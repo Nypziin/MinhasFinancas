@@ -59,7 +59,16 @@
                                         <option selected disabled>Selecione a forma de pagamento</option>
                                       </select>
                                     </div>
-
+                                    <div class="mb-3">
+                                      <label for="nomeTipoGasto" class="form-label">Tipo de Gasto:</label>
+                                      <select id="nomeTipoGasto" class="form-select" aria-label="Tipo de gasto">
+                                        <option selected disabled>Selecione o tipo de gasto</option>
+                                      </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nomeData" class="form-label">Data de Compra:</label>
+                                        <input id= "nomeData" class="form-control" type="text" placeholder="Insira a data do gasto" aria-label="Insira a data do gasto">
+                                    </div>
 
                                 </div>
                             <div class="modal-footer">
@@ -74,6 +83,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="/static/js/main.js"></script>
+
   <script>
       const inputValorTotal = document.getElementById('nomeValorTotal');
       const inputParcelas = document.getElementById('nomeParcelas');
@@ -84,7 +94,7 @@
         const parcelas = parseInt(inputParcelas.value, 10);
 
         if (total > 0 && parcelas > 0) {
-          const valor = (total / parcelas).toFixed(2);
+          const valor = (Math.floor((total / parcelas) * 100) / 100).toFixed(2);
           inputValorParcela.value = new Intl.NumberFormat('pt-BR', {
             style: 'currency',
             currency: 'BRL'
@@ -139,6 +149,45 @@
       }
 
       carregarFormasPagamento();
+  </script>
+
+  <script>
+      async function carregarTiposGasto() {
+        const select = document.getElementById("nomeTipoGasto");
+
+        try {
+          const response = await fetch("/enum/tipos-gasto"); // rota do FastAPI
+          const formas = await response.json();
+
+          formas.forEach(f => {
+            const option = document.createElement("option");
+            option.value = f.key;
+            option.textContent = f.value;
+            select.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Erro ao carregar tipos de gasto:", error);
+        }
+      }
+
+      carregarTiposGasto();
+  </script>
+
+  <script>
+      const inputData = document.getElementById("nomeData");
+
+      inputData.addEventListener("input", function(e) {
+        let valor = e.target.value.replace(/\D/g, ""); // só números
+
+        if (valor.length > 2) {
+          valor = valor.slice(0,2) + "/" + valor.slice(2);
+        }
+        if (valor.length > 5) {
+          valor = valor.slice(0,5) + "/" + valor.slice(5,9);
+        }
+
+        e.target.value = valor;
+      });
   </script>
 
 </body>
