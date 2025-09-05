@@ -1,9 +1,8 @@
 from fastapi import FastAPI
 from starlette.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
-from app.api import gastos, enum
+from app.api import gastos, enum, categorias
 from app.core.database import Base, engine
-from app.models import gasto, categoria
 
 app = FastAPI()
 
@@ -20,3 +19,4 @@ def read_index():
 
 app.include_router(gastos.router)
 app.include_router(enum.router)
+app.include_router(categorias.router)

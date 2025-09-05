@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 import os
 from dotenv import load_dotenv
@@ -6,20 +6,22 @@ from dotenv import load_dotenv
 # Carrega variáveis do .env
 load_dotenv()
 
-# String de conexão do banco (PostgreSQL)
-DB_USER = os.getenv("DB_USER", "postgres")
-DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
-DB_HOST = os.getenv("DB_HOST", "localhost")
-DB_PORT = os.getenv("DB_PORT", "5432")
-DB_NAME = os.getenv("DB_NAME", "finance")
+DB_SERVER = os.getenv("DB_SERVER", "SQLEXPRESS")
+DB_DRIVER = os.getenv("DB_DRIVER", "ODBC Driver 17 for SQL Server")
+DB_DATABASE = os.getenv("DB_DATABASE", "finance")
 
-DATABASE_URL = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+# Efetuo a conexão no banco de dados master apenas para ter uma conexão com o SQL Server
+MASTER_DATABASE_URL = f"mssql+pyodbc://@{DB_SERVER}/master?driver={DB_DRIVER}&trusted_connection=yes"
+master_engine = create_engine(MASTER_DATABASE_URL, isolation_level="AUTOCOMMIT")
 
-# Engine
+# Crio o banco de dados finance se não houver
+with master_engine.connect() as conn:
+    conn.execute(text("IF DB_ID('finance') IS NULL CREATE DATABASE finance;"))
+
+# Efetuo de fato a conexão com o banco de dados finance
+DATABASE_URL = f"mssql+pyodbc://@{DB_SERVER}/{DB_DATABASE}?driver={DB_DRIVER}&trusted_connection=yes"
 engine = create_engine(DATABASE_URL, echo=True)
 
-# Sessão
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# Base (caso você prefira importar de um único lugar)
 Base = declarative_base()

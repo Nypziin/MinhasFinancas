@@ -14,3 +14,6 @@ def criar_categorias(db: Session, categoria: CategoriaCreate) -> Categoria:
 
 def listar_categorias(db: Session, limite: int = 100):
     return db.query(Categoria).limit(limite).all()
+
+def categoria_por_id(db: Session, categoria_nome: str):
+    return db.query(Categoria).filter(Categoria.nome_categoria == categoria_nome).first()
