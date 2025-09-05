@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from app.models.gasto import Gasto
-from app.schemas.gasto_schema import GastoCreate
+from app.schemas.gasto_schema import GastoToPersist
 from datetime import datetime
 
-def criar_gasto(db: Session, gasto: GastoCreate) -> Gasto:
+def criar_gasto(db: Session, gasto: GastoToPersist) -> Gasto:
     db_gasto = Gasto(
         nome=gasto.nome,
         categoria=gasto.categoria,
