@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, Date, Numeric, Enum, text
-from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
+from sqlalchemy import Column, Integer, String, DateTime, Date, Numeric, Enum, ForeignKey
+from sqlalchemy.orm import relationship
 from app.core.database import Base
 from datetime import datetime
 import enum
@@ -32,4 +32,8 @@ class Gasto(Base):
     tipo_gasto = Column(Enum(TipoGastoEnum, native_enum=False), nullable=False)
     data_compra = Column(Date, nullable=False)
     criado_em = Column(DateTime, default=datetime.now)
+
+    fatura_id = Column(Integer, ForeignKey("faturas.id"), nullable=False)
+
+    fatura = relationship("Fatura", back_populates="gastos")
 

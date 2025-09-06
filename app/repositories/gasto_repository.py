@@ -27,3 +27,5 @@ def listar_gastos(db: Session, limite: int = 100):
 
 def buscar_por_id(db: Session, gasto_id: int):
     return db.query(Gasto).filter(Gasto.id == gasto_id).first()
+
+
