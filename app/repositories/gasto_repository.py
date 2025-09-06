@@ -5,12 +5,14 @@ from datetime import datetime
 
 def criar_gasto(db: Session, gasto: GastoToPersist) -> Gasto:
     db_gasto = Gasto(
+        grupo_id=gasto.grupo_id,
         nome=gasto.nome,
         categoria=gasto.categoria,
         valor_total=gasto.valor_total,
         parcelas=gasto.parcelas,
         valor_parcela=gasto.valor_parcela,
         forma_pagamento=gasto.forma_pagamento,
+        parcela_atual=gasto.parcela_atual,
         tipo_gasto=gasto.tipo_gasto,
         data_compra=gasto.data_compra,
         criado_em=datetime.now()

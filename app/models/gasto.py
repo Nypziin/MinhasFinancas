@@ -1,5 +1,5 @@
-from sqlalchemy import Column, Integer, String, DateTime, Date, Numeric, Enum
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, DateTime, Date, Numeric, Enum, text
+from sqlalchemy.dialects.mssql import UNIQUEIDENTIFIER
 from app.core.database import Base
 from datetime import datetime
 import enum
@@ -21,12 +21,14 @@ class Gasto(Base):
     __tablename__ = "gastos"
 
     id = Column(Integer, primary_key=True, index=True)
+    grupo_id = Column(String(36), nullable=False, index=True)
     nome = Column(String, nullable=False)
     categoria = Column(String, nullable=False)
     valor_total = Column(Numeric(10, 2), nullable=False)
     parcelas = Column(Integer, default=1)
     valor_parcela = Column(Numeric(10, 2), nullable=False)
     forma_pagamento = Column(Enum(FormaPagamentoEnum, native_enum=False), nullable=False)
+    parcela_atual = Column(Integer, default=1)
     tipo_gasto = Column(Enum(TipoGastoEnum, native_enum=False), nullable=False)
     data_compra = Column(Date, nullable=False)
     criado_em = Column(DateTime, default=datetime.now)

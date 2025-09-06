@@ -27,11 +27,12 @@ class GastoCreate(GastoBase):
 
 class GastoToPersist(GastoCreate):
     valor_parcela: float = Field(..., gt=0)
+    parcela_atual: int
+    grupo_id: str
 
 class GastoResponse(GastoToPersist):
     id: int
     criado_em: datetime
-    valor_parcela: float
 
     class Config:
         orm_mode = True
